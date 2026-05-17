@@ -1,0 +1,30 @@
+# Virtual environments
+venv/
+heart.venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Environment variables
+.env
+
+# Database files
+*.db
+*.sqlite3
+
+# Uploads
+uploads/
+
+# Firebase secret keys
+firebase-service-account-key.json
+serviceAccountKey.json
+
+# VS Code settings
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+*.json.json
