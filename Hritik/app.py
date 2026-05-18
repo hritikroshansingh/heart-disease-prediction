@@ -338,18 +338,64 @@ def ocr_process():
 def home():
     return render_template('home.html')
 
+# @app.route('/signup', methods=['GET', 'POST'])
+# def signup():
+#     if current_user.is_authenticated:
+#         return redirect(url_for('dashboard'))
+#     # Removed traditional POST handling, all signup goes via firebase-auth endpoint
+#     return render_template('signup.html')
+
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+#     if current_user.is_authenticated:
+#         return redirect(url_for('dashboard'))
+#     # Removed traditional POST handling, all login goes via firebase-auth endpoint
+#     return render_template('login.html')
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
-    # Removed traditional POST handling, all signup goes via firebase-auth endpoint
+
+    if request.method == 'POST':
+        fullName = request.form.get('fullName')
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            flash('Account already exists. Please login.', 'danger')
+            return redirect(url_for('login'))
+
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+        user = User(fullName=fullName, email=email, password=hashed_password)
+        db.session.add(user)
+        db.session.commit()
+
+        login_user(user)
+        return redirect(url_for('dashboard'))
+
     return render_template('signup.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
-    # Removed traditional POST handling, all login goes via firebase-auth endpoint
+
+    if request.method == 'POST':
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        user = User.query.filter_by(email=email).first()
+
+        if user and user.password and bcrypt.check_password_hash(user.password, password):
+            login_user(user)
+            return redirect(url_for('dashboard'))
+
+        flash('Login failed. Check email and password.', 'danger')
+        return redirect(url_for('login'))
+
     return render_template('login.html')
 
 @app.route('/logout')
@@ -435,6 +481,12 @@ def update_profile_pic():
             db.session.commit()
             flash('Your profile picture has been updated!', 'success')
     return redirect(url_for('profile'))
+
+@app.route('/reset-db')
+def reset_db():
+    db.drop_all()
+    db.create_all()
+    return "Database reset successful"
 
 if __name__ == '__main__':
     with app.app_context():
