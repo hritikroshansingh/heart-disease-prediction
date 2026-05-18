@@ -359,7 +359,7 @@ def signup():
 
     if request.method == 'POST':
         fullName = request.form.get('fullName')
-        email = request.form.get('email')
+        email = request.form.get('email').strip().lower()
         password = request.form.get('password')
 
         existing_user = User.query.filter_by(email=email).first()
@@ -384,16 +384,24 @@ def login():
         return redirect(url_for('dashboard'))
 
     if request.method == 'POST':
-        email = request.form.get('email')
+        email = request.form.get('email').strip().lower()
         password = request.form.get('password')
 
         user = User.query.filter_by(email=email).first()
 
-        if user and user.password and bcrypt.check_password_hash(user.password, password):
+        if not user:
+            flash('No account found with this email. Please register first.', 'danger')
+            return redirect(url_for('login'))
+
+        if not user.password:
+            flash('This account was created with Firebase. Use Firebase login or reset password.', 'danger')
+            return redirect(url_for('login'))
+
+        if bcrypt.check_password_hash(user.password, password):
             login_user(user)
             return redirect(url_for('dashboard'))
 
-        flash('Login failed. Check email and password.', 'danger')
+        flash('Wrong password. Please try again.', 'danger')
         return redirect(url_for('login'))
 
     return render_template('login.html')
