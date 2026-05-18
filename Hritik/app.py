@@ -373,8 +373,8 @@ def signup():
         db.session.add(user)
         db.session.commit()
 
-        login_user(user)
-        return redirect(url_for('dashboard'))
+        flash('Account created successfully. Please login.', 'success')
+        return redirect(url_for('login'))
 
     return render_template('signup.html')
 
@@ -482,11 +482,11 @@ def update_profile_pic():
             flash('Your profile picture has been updated!', 'success')
     return redirect(url_for('profile'))
 
-@app.route('/reset-db')
-def reset_db():
-    db.drop_all()
-    db.create_all()
-    return "Database reset successful"
+# @app.route('/reset-db')
+# def reset_db():
+#     db.drop_all()
+#     db.create_all()
+#     return "Database reset successful"
 
 with app.app_context():
     db.create_all()
