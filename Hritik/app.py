@@ -10,7 +10,7 @@ from flask_bcrypt import Bcrypt
 from werkzeug.utils import secure_filename
 import joblib
 import numpy as np
-import easyocr
+# import easyocr
 import docx
 import firebase_admin
 from firebase_admin import credentials, auth
@@ -53,7 +53,7 @@ except FileNotFoundError:
     print("WARNING: Model/scaler files not found.")
 
 try:
-    reader = easyocr.Reader(['en'])
+    # reader = easyocr.Reader(['en'])
     print("EasyOCR reader initialized successfully.")
 except Exception as e:
     reader = None
@@ -318,7 +318,7 @@ def ocr_process():
             doc = docx.Document(filepath)
             text = " ".join([p.text for p in doc.paragraphs])
         else: # Assume image
-            result = reader.readtext(filepath, detail=0)
+            # result = reader.readtext(filepath, detail=0)
             text = " ".join(result)
     except Exception as e:
         print(f"OCR Error: {e}")
