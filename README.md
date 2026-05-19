@@ -61,10 +61,6 @@ heart-risk-day1-starter/
 │── README.md # Project documentation (this file)
 │── .gitignore # Ignore unnecessary files in Git
 
-yaml
-Copy
-Edit
-
 ---
 
 ## 🛠 Tech Stack
@@ -89,7 +85,7 @@ Edit
 
 ##  Repository
 
-🔗 [GitHub Repository](https://github.com/your-username/heart-risk-prediction)
+🔗 [GitHub Repository](https://github.com/hritikroshansingh/heart-risk-prediction)
 
 ---
 
