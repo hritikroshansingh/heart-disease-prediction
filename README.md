@@ -85,7 +85,7 @@ heart-risk-day1-starter/
 
 ##  Repository
 
-🔗 [GitHub Repository](https://github.com/hritikroshansingh/heart-risk-prediction)
+🔗 [GitHub Repository](https://github.com/hritikroshansingh/heart-disease-prediction)
 
 ---
 
